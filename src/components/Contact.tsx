@@ -1,8 +1,11 @@
 import { useState, useRef, MouseEvent, FormEvent } from "react";
 import "./styles/Contact.css";
 
-// Local Native backend API endpoint
-const WEBHOOK_URL = "http://localhost:5000/api/contact";
+// Hybrid Backend Logic:
+// Localhost uses the native Excel server; Production (Vercel) uses the Make.com webhook.
+const WEBHOOK_URL = window.location.hostname === "localhost" 
+  ? "http://localhost:5000/api/contact" 
+  : "https://hook.eu1.make.com/8w7qbrfd6i3vdl6j1ddvtujtqeohyvyg";
 
 const Contact = () => {
   const formRef = useRef<HTMLDivElement>(null);
