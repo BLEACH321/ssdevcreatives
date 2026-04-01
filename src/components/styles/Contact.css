@@ -1,0 +1,172 @@
+.contact-section {
+  margin: auto;
+  padding-bottom: 100px;
+  margin-top: 100px;
+  position: relative;
+  z-index: 2;
+  background-color: var(--backgroundColor);
+  color: #ccc;
+}
+
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.contact-title {
+  font-size: clamp(40px, 5vw, 60px);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 60px;
+}
+
+.accent-gold {
+  color: var(--accentColor);
+}
+
+.contact-details h4 {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 25px;
+}
+
+.contact-details p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+/* 3D Form Container */
+.contact-right {
+  perspective: 1000px;
+  /* Add padding to capture mouse movements gracefully outside the rotating card */
+  padding: 20px; 
+}
+
+.form-card {
+  background: rgba(25, 25, 28, 0.5); /* Subtle depth block */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 40px;
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.form-card:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+}
+
+.form-card h4 {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 40px;
+  transform: translateZ(20px); /* 3D pop out effect on children */
+}
+
+/* Form Styles */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  transform: translateZ(30px); /* Lift form elements off the card */
+}
+
+.form-row {
+  display: flex;
+  gap: 30px;
+}
+
+.form-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.half-width {
+  flex: 1;
+}
+.full-width {
+  width: 100%;
+}
+
+.form-group input,
+.form-group textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 16px;
+  padding: 10px 0;
+  font-family: inherit;
+  transition: border-color 0.3s;
+  outline: none;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-bottom-color: var(--accentColor);
+}
+
+.form-group label {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.3s ease all;
+}
+
+/* Floating Label Magic */
+.form-group input:focus ~ label,
+.form-group input:not(:placeholder-shown) ~ label,
+.form-group textarea:focus ~ label,
+.form-group textarea:not(:placeholder-shown) ~ label {
+  top: -20px;
+  font-size: 12px;
+  color: var(--accentColor);
+}
+
+.submit-btn {
+  background-color: var(--accentColor);
+  color: #050810;
+  border: none;
+  padding: 15px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  align-self: center; /* Centered the button */
+  margin-top: 20px;
+  outline: none;
+  /* 3D button pop */
+  transform: translateZ(40px);
+  box-shadow: 0 4px 15px rgba(94, 234, 212, 0.3);
+}
+
+.submit-btn:hover {
+  background-color: #7ff4e5;
+  transform: translateZ(45px) scale(1.05);
+}
+
+@media only screen and (max-width: 1024px) {
+  .split-layout {
+    grid-template-columns: 1fr;
+    gap: 80px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+  }
+  .form-card {
+    padding: 20px;
+  }
+}

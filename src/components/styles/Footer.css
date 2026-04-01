@@ -1,0 +1,79 @@
+.footer-container {
+  width: 100%;
+  padding: 50px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: center;
+  background-color: transparent; /* Blends nicely with the existing theme */
+  position: relative;
+  z-index: 10;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  gap: 20px;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-icon {
+  color: #adacac;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.footer-icon:hover {
+  color: #fff;
+}
+
+.footer-copyright {
+  color: #adacac;
+  font-size: 0.85rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: #adacac;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #2f81f7; /* Classic GitHub blue hover effect */
+  text-decoration: underline;
+}
+
+/* Responsive constraints */
+@media (max-width: 1024px) {
+  .footer-content {
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    text-align: center;
+  }
+  
+  .footer-left {
+    justify-content: center;
+  }
+  
+  .footer-links {
+    justify-content: center;
+  }
+}

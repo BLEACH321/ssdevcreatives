@@ -1,0 +1,245 @@
+:root {
+  --cyan: hsl(180, 100%, 50%);
+  --purple: hsl(280, 100%, 60%);
+  --bg-dark: #050505;
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-dark);
+  z-index: 999999999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  color: var(--cyan);
+}
+
+/* Background Effects */
+.loading-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+  pointer-events: none;
+}
+
+.scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--cyan), transparent);
+  opacity: 0.1;
+  animation: scan 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  from { transform: translateY(-100vh); }
+  to { transform: translateY(100vh); }
+}
+
+/* Core Animation */
+.loading-core-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.core-outer-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--glass-border);
+  border-top: 2px solid var(--cyan);
+  border-radius: 50%;
+  animation: rotate-outer 10s linear infinite;
+}
+
+.core-inner-ring {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  border: 2px solid var(--glass-border);
+  border-bottom: 2px solid var(--purple);
+  border-radius: 50%;
+  animation: rotate-inner 6s linear infinite;
+}
+
+.core-center {
+  width: 60px;
+  height: 60px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 30px var(--cyan);
+  animation: pulse-core 2s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg-dark);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+@keyframes rotate-outer {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotate-inner {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes pulse-core {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 50px var(--cyan); }
+}
+
+/* Status Logs */
+.status-logs {
+  width: 400px;
+  height: 120px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.log-entry {
+  opacity: 0.7;
+  animation: log-flicker 0.1s infinite alternate;
+}
+
+.log-entry.ok { color: #4ade80; }
+.log-entry.error { color: #f87171; }
+
+@keyframes log-flicker {
+  from { opacity: 0.7; }
+  to { opacity: 0.9; }
+}
+
+/* Progress Bar */
+.progress-wrapper {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.progress-info {
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 4px;
+  background: var(--glass-border);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  box-shadow: 0 0 15px var(--cyan);
+  transition: width 0.3s ease;
+}
+
+.progress-glitch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: progress-glitch-anim 2s linear infinite;
+}
+
+@keyframes progress-glitch-anim {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Header */
+.loading-header {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  z-index: 1000000000;
+}
+
+.loader-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  text-decoration: none;
+  letter-spacing: 4px;
+}
+
+/* Welcome Screen Overrides */
+.loading-screen.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+  pointer-events: none;
+}
+
+.welcome-msg {
+  position: absolute;
+  font-size: 4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1rem;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+  color: white;
+  text-shadow: 0 0 30px var(--cyan);
+}
+
+.loading-screen.complete .welcome-msg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.loading-screen.complete .loading-core-container,
+.loading-screen.complete .status-logs,
+.loading-screen.complete .progress-wrapper {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease-out;
+}
+
+@media (max-width: 600px) {
+  .loading-core-container { width: 200px; height: 200px; }
+  .status-logs, .progress-wrapper { width: 85%; }
+  .welcome-msg { font-size: 2rem; letter-spacing: 0.5rem; }
+}

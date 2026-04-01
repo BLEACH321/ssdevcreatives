@@ -1,0 +1,57 @@
+.grid-loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  cursor: wait;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 12px;
+  width: 120px;
+  height: 120px;
+}
+
+.grid-cell {
+  background: #ffffff;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+}
+
+.loader-progress-text {
+  margin-top: 40px;
+  color: #ffffff;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+  .grid-container {
+    width: 90px;
+    height: 90px;
+    gap: 8px;
+  }
+  
+  .grid-cell {
+    border-radius: 1px;
+  }
+  
+  .loader-progress-text {
+    font-size: 12px;
+    margin-top: 30px;
+  }
+}
