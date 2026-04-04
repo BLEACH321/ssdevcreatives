@@ -13,14 +13,11 @@ const Footer = () => {
         </div>
 
         <div className="footer-links">
-          <a href="#" data-cursor="pointer">Terms</a>
-          <a href="#" data-cursor="pointer">Privacy</a>
-          <a href="#" data-cursor="pointer">Security</a>
-          <a href="#" data-cursor="pointer">Status</a>
-          <a href="#" data-cursor="pointer">Docs</a>
-          <a href="#" data-cursor="pointer">Contact</a>
-          <a href="#" data-cursor="pointer">Manage cookies</a>
-          <a href="#" data-cursor="pointer">Do not share my personal information</a>
+          <a href="#" data-cursor="pointer">Terms & SERVICES</a>
+          <a href="#" data-cursor="pointer">PRIVACY POLICY</a>
+          <a href="#" data-cursor="pointer">COOKIE POLICY</a>
+
+
         </div>
       </div>
     </footer>

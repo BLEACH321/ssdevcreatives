@@ -1,20 +1,27 @@
 .about-section {
   display: flex;
   align-items: center;
-  justify-content: left;
-  place-items: center;
+  justify-content: center;
   position: relative;
-  opacity: 1;
   height: auto;
+  width: 100%;
+  padding: 50px 0;
+}
+
+.section-container {
   width: var(--cWidth);
+  max-width: var(--cMaxWidth);
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
+
 .about-me {
-  padding: 50px 0px;
-  padding-bottom: 0;
-  width: 500px;
-  max-width: calc(100% - 15px);
+  width: 100%;
+  padding: 0 10px;
 }
+
 .about-me h3 {
   font-family: "Space Grotesk", sans-serif;
   font-size: 20px;
@@ -27,49 +34,205 @@
 
 .about-me p {
   font-family: "Outfit", sans-serif;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 400;
   line-height: 1.4;
   letter-spacing: 0.5px;
   color: #ccd6f6;
 }
 
-@media only screen and (min-width: 600px) {
+/* Founders Section Styles */
+.founders-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.founder-card {
+  position: relative;
+  background: rgba(17, 17, 17, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 25px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.founder-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(20, 184, 166, 0.1);
+  border-color: rgba(20, 184, 166, 0.3);
+}
+
+.founder-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(20, 184, 166, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.founder-content {
+  position: relative;
+  z-index: 1;
+}
+
+.founder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.founder-num {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  color: var(--accentColor);
+  opacity: 0.6;
+  font-weight: 600;
+}
+
+.founder-role {
+  font-family: "Outfit", sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accentColor);
+  background: rgba(20, 184, 166, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.founder-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.founder-desc {
+  font-family: "Outfit", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #a8b2d1;
+  margin-bottom: 20px;
+}
+
+.founder-links {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.founder-btn {
+  background: var(--accentColor);
+  color: #0c0c0c;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: "Outfit", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.founder-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 5px 15px rgba(20, 184, 166, 0.3);
+}
+
+.founder-github {
+  color: #a8b2d1;
+  text-decoration: none;
+  font-family: "Outfit", sans-serif;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.founder-github:hover {
+  color: var(--accentColor);
+}
+
+@media only screen and (min-width: 1024px) {
   .about-section {
+    height: 100vh;
+    padding: 0;
+    justify-content: flex-end;
+    /* Align to the right side of the section */
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: none;
+    overflow: hidden;
+  }
+
+  .about-section .section-container {
+    width: 45vw;
+    /* Even narrower to strictly stay on the right side */
+    margin: 0;
+    margin-right: 5vw;
+    /* Gap from the right edge */
+    flex-direction: column;
+    gap: 30px;
+    align-items: flex-start;
     justify-content: center;
+    max-width: none;
+    z-index: 20;
+    /* Ensure it stays above character glows/rims */
+  }
+
+  .about-section .about-me {
+    width: 100%;
+    padding: 0;
+  }
+
+  .about-section .about-me p {
+    font-size: 1.2vw;
+    /* Reduced font size to fit in narrower container */
+    line-height: 1.6;
+    max-width: 100%;
+  }
+
+  .about-section .founders-container {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0;
+    width: 100%;
+    gap: 15px;
+  }
+
+  .about-section .founder-card {
+    flex: 1;
+    max-width: none;
+    min-width: 0;
+    padding: 15px;
+    /* Compact padding for side-by-side fit */
+  }
+
+  .about-section .founder-name {
+    font-size: 18px;
+  }
+
+  .about-section .founder-desc {
+    font-size: 13px;
+    line-height: 1.4;
   }
 }
-@media only screen and (min-width: 768px) {
-  .about-me {
-    width: 500px;
-    max-width: calc(100% - 70px);
-    transform: translateY(0%);
-  }
-  .about-section {
-    opacity: 1;
-  }
-}
-@media only screen and (min-width: 1025px) {
-  .about-section {
-    width: var(--cWidth);
-    justify-content: right;
-    max-width: 1920px;
-    height: var(--vh);
-    padding: 0px;
-    opacity: 1;
-  }
-  .about-me {
-    padding: 0px;
-    width: 50%;
-  }
+
+@media only screen and (max-width: 768px) {
   .about-me p {
-    font-size: 1.9vw;
-    line-height: 2.3vw;
+    font-size: 20px;
   }
-}
-@media only screen and (min-width: 1950px) {
-  .about-me p {
-    font-size: 2.5rem;
-    line-height: 2.7rem;
+
+  .founder-name {
+    font-size: 20px;
   }
 }
