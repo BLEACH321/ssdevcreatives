@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { FiMonitor, FiShoppingCart, FiPenTool, FiSearch, FiZap, FiHeadphones } from 'react-icons/fi';
 import Marquee from "react-fast-marquee";
