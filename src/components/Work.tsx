@@ -1,8 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import "./styles/Work.css";
 import WorkImage from "./WorkImage";
-import { MdArrowBack, MdArrowForward } from "react-icons/md";
 import { smoother } from "./Navbar";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
 
 const projects = [
   {
@@ -46,29 +46,45 @@ const projects = [
 
 const Work = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [direction, setDirection] = useState(0); // -1 for left, 1 for right
 
   const goToSlide = useCallback(
-    (index: number) => {
-      if (isAnimating) return;
-      setIsAnimating(true);
+    (index: number, newDirection: number) => {
+      setDirection(newDirection);
       setCurrentIndex(index);
-      setTimeout(() => setIsAnimating(false), 500);
     },
-    [isAnimating]
+    []
   );
 
   const goToPrev = useCallback(() => {
     const newIndex =
       currentIndex === 0 ? projects.length - 1 : currentIndex - 1;
-    goToSlide(newIndex);
+    goToSlide(newIndex, -1);
   }, [currentIndex, goToSlide]);
 
   const goToNext = useCallback(() => {
     const newIndex =
       currentIndex === projects.length - 1 ? 0 : currentIndex + 1;
-    goToSlide(newIndex);
+    goToSlide(newIndex, 1);
   }, [currentIndex, goToSlide]);
+
+  // Auto-play functionality
+  useEffect(() => {
+    const timer = setInterval(() => {
+      goToNext();
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(timer);
+  }, [goToNext]);
+
+  const handleDragEnd = (_: any, info: PanInfo) => {
+    const threshold = 50;
+    if (info.offset.x < -threshold) {
+      goToNext();
+    } else if (info.offset.x > threshold) {
+      goToPrev();
+    }
+  };
 
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -79,6 +95,42 @@ const Work = () => {
     }
   };
 
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 500 : -500,
+      opacity: 0,
+      scale: 0.5,
+      filter: "blur(10px)",
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      transition: {
+        x: { type: "spring" as const, stiffness: 450, damping: 30 },
+        opacity: { duration: 0.15 },
+        scale: { type: "spring" as const, stiffness: 500, damping: 25 },
+        filter: { duration: 0.2 },
+      },
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 500 : -500,
+      opacity: 0,
+      scale: 0.5,
+      filter: "blur(10px)",
+      transition: {
+        x: { type: "spring" as const, stiffness: 450, damping: 30 },
+        opacity: { duration: 0.15 },
+        scale: { duration: 0.15 },
+      },
+    }),
+  };
+
+  const project = projects[currentIndex];
+
   return (
     <div className="work-section" id="work">
       <div className="work-container section-container">
@@ -86,115 +138,129 @@ const Work = () => {
           ELITE <span>CREATIONS</span>
         </h2>
 
-        <div className="carousel-wrapper">
-          {/* Navigation Arrows */}
-          <button
-            className="carousel-arrow carousel-arrow-left"
-            onClick={goToPrev}
-            aria-label="Previous project"
-            data-cursor="disable"
-          >
-            <MdArrowBack />
-          </button>
-          <button
-            className="carousel-arrow carousel-arrow-right"
-            onClick={goToNext}
-            aria-label="Next project"
-            data-cursor="disable"
-          >
-            <MdArrowForward />
-          </button>
-
+        <div className="carousel-wrapper" style={{ position: "relative" }}>
           {/* Slides */}
-          <div className="carousel-track-container">
-            <div
-              className="carousel-track"
-              style={{
-                transform: `translateX(-${currentIndex * 100}%)`,
-              }}
-            >
-              {projects.map((project, index) => (
-                <div className="carousel-slide" key={index}>
-                  <div className="carousel-content">
-                    <div className="carousel-info">
-                      <div className="carousel-number">
-                        <h3>0{index + 1}</h3>
-                      </div>
-                      <div className="carousel-details">
-                        <h4>{project.title}</h4>
-                        <p className="carousel-category">
-                          {project.category}
-                        </p>
-                        <div className="carousel-tools">
-                          {project.isComingSoon ? (
-                            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                              <span
-                                className="coming-soon-3d"
-                                style={{ display: 'inline-block', cursor: 'default' }}
-                              >
-                                {project.readiness}
-                              </span>
-                              <a
-                                href="#contact"
-                                className="coming-soon-3d"
-                                onClick={handleContactClick}
-                                style={{ textDecoration: 'none', display: 'inline-block' }}
-                              >
-                                {project.tools}
-                              </a>
-                            </div>
-                          ) : (
-                            <>
-                              <span className="tools-label">Tools & Features</span>
-                              <p>{project.tools}</p>
-                              {project.github && (
-                                <div style={{ marginTop: '1rem' }}>
-                                  <a
-                                    href={project.github}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="coming-soon-3d"
-                                    style={{ textDecoration: 'none' }}
-                                  >
-                                    View Source Code
-                                  </a>
-                                </div>
-                              )}
-                              {project.liveDemo && (
-                                <div style={{ marginTop: '0.5rem' }}>
-                                  <a
-                                    href={project.liveDemo}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="coming-soon-3d"
-                                    style={{ textDecoration: 'none' }}
-                                  >
-                                    View Live App
-                                  </a>
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="carousel-image-wrapper">
-                      <WorkImage image={project.image} alt={project.title} />
+          <div className="carousel-track-container" style={{ position: "relative" }}>
+            <AnimatePresence initial={false} custom={direction} mode="popLayout">
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={1}
+                onDragEnd={handleDragEnd}
+                className="carousel-slide"
+                style={{ width: "100%" }}
+              >
+                <div className="carousel-content">
+                  <div className="carousel-info">
+                    <motion.div
+                      className="carousel-number"
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 0.3, scale: 1 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <h3>0{currentIndex + 1}</h3>
+                    </motion.div>
+                    <div className="carousel-details">
+                      <motion.h4
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, delay: 0.05 }}
+                      >
+                        {project.title}
+                      </motion.h4>
+                      <motion.p
+                        className="carousel-category"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, delay: 0.1 }}
+                      >
+                        {project.category}
+                      </motion.p>
+                      <motion.div
+                        className="carousel-tools"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, delay: 0.15 }}
+                      >
+                        {project.isComingSoon ? (
+                          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                            <span
+                              className="coming-soon-3d"
+                              style={{ display: 'inline-block', cursor: 'default' }}
+                            >
+                              {project.readiness}
+                            </span>
+                            <a
+                              href="#contact"
+                              className="coming-soon-3d"
+                              onClick={handleContactClick}
+                              style={{ textDecoration: 'none', display: 'inline-block' }}
+                            >
+                              {project.tools}
+                            </a>
+                          </div>
+                        ) : (
+                          <>
+                            <span className="tools-label">Tools & Features</span>
+                            <p>{project.tools}</p>
+                            {project.github && (
+                              <div style={{ marginTop: '1rem' }}>
+                                <a
+                                  href={project.github}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="coming-soon-3d"
+                                  style={{ textDecoration: 'none' }}
+                                >
+                                  View Source Code
+                                </a>
+                              </div>
+                            )}
+                            {project.liveDemo && (
+                              <div style={{ marginTop: '0.5rem' }}>
+                                <a
+                                  href={project.liveDemo}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="coming-soon-3d"
+                                  style={{ textDecoration: 'none' }}
+                                >
+                                  View Live App
+                                </a>
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </motion.div>
                     </div>
                   </div>
+                  <motion.div
+                    className="carousel-image-wrapper"
+                    initial={{ opacity: 0, scale: 0.4, rotateY: 20, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, scale: 1, rotateY: 0, filter: "blur(0px)" }}
+                    transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 20 }}
+                  >
+                    <WorkImage image={project.image} alt={project.title} />
+                  </motion.div>
                 </div>
-              ))}
-            </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Dot Indicators */}
-          <div className="carousel-dots">
+          <div className="carousel-dots" style={{ position: "relative", zIndex: 10 }}>
             {projects.map((_, index) => (
               <button
                 key={index}
                 className={`carousel-dot ${index === currentIndex ? "carousel-dot-active" : ""
                   }`}
-                onClick={() => goToSlide(index)}
+                onClick={() => goToSlide(index, index > currentIndex ? 1 : -1)}
                 aria-label={`Go to project ${index + 1}`}
                 data-cursor="disable"
               />
@@ -207,3 +273,5 @@ const Work = () => {
 };
 
 export default Work;
+
+

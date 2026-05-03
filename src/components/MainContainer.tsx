@@ -7,6 +7,7 @@ import Landing from "./Landing";
 import Navbar from "./Navbar";
 import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
+import Services from "./Services";
 import Work from "./Work";
 import setSplitText from "./utils/splitText";
 import { debounce } from "../utils/debounce";
@@ -48,7 +49,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <Landing>{!isDesktopView && children}</Landing>
             <About />
             <WhatIDo />
-
+            <Services />
             <Work />
             {isDesktopView && (
               <Suspense fallback={<div>Loading....</div>}>
